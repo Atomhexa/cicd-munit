@@ -31,6 +31,19 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
+					  <cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>4.3.0</muleVersion>
+						<username>cicdnew</username>
+					    <password>Kolkata@1234</password>
+					    <applicationName>atomhexamulecicd</applicationName>
+					    <environment>Sandbox</environment>
+					    <workerType>MICRO</workerType>
+						<objectStoreV2>true</objectStoreV2>
+					    <properties>
+						  <key>value</key>
+					    </properties>
+					</cloudHubDeployment>
 				</configuration>
 			</plugin>
 		</plugins>
