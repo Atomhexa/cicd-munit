@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="implementationGetRecord" doc:id="099d0016-2e01-4a77-bb63-0c4fc452eaf6" >
+		<db:select doc:name="Select" doc:id="1b8feadf-2fcc-4393-bb16-f86f4b45d2bd" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from Persons]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="0420ef3b-9b85-4b10-8b82-70e03eb4e068" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="implementationPostRecord" doc:id="9ba5e9fe-89c2-49b4-a41b-22b4c2bcadac" >
+		<db:insert doc:name="Insert" doc:id="d3bcab51-68a4-4966-84d2-2d4ef06de4f7" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into Persons values (:id,:name)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id : payload.id,
+	name : payload.name
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="Transform Message" doc:id="0f54b796-665b-467f-901b-7c7a0bb7b818" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"Message" : "Success"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
